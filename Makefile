@@ -1,5 +1,6 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -I include/ -llgpio
+CFLAGS = -Wall -Wextra -I include/
+LDFLAGS = -llgpio
 SRCDIR = .
 OBJDIR = obj
 BINDIR = bin
@@ -17,7 +18,7 @@ all: $(TARGET)
 
 $(TARGET): $(OBJECTS)
 	@mkdir -p $(BINDIR)
-	$(CC) $(OBJECTS) -o $@
+	$(CC) $(OBJECTS) -o $@ $(LDFLAGS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(@D)
