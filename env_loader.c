@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-char *_checkLine(char *line, char *variable) {
+char *_checkLine(char *line, const char *variable) {
   // Checks a line in the .env
   //   If the line variable matches variable, return the value
   //   If not, return NULL
@@ -30,7 +30,7 @@ char *_checkLine(char *line, char *variable) {
   return NULL;
 }
 
-int loadEnv(char *variable, char **value, char *file_path) {
+int loadEnv(const char *variable, char **value, const char *file_path) {
   // Load the contents of a .env file
   //   variable = key to search for
   //   value = pointer to char* to store var in
