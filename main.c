@@ -70,7 +70,7 @@ void *updateThread(void* _) {
             pthread_mutex_unlock(&HISTORY_LOCK);
         }
 
-        for (int i = 0; i < 60; i++) {
+        for (int i = 0; i < 30; i++) {
             sleep(20);
             if (sigint) {
                 return NULL;
