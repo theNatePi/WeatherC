@@ -27,7 +27,7 @@ void *updateThread(void* _) {
 
     while (1) {
         for (int i = 0; i < 6; i++) {
-            char buff[200];
+            char buff[250];
             char city[200];
             strcpy(city, CITIES[i]);
             for (int j = 0; j < (int) strlen(city); j++) {
@@ -35,7 +35,7 @@ void *updateThread(void* _) {
                     city[j] = '+';
                 }
             }
-            snprintf(buff, 200, "v1/current.json?key=%s&q=%s&aqi=no", pKey, city);
+            snprintf(buff, 250, "v1/current.json?key=%s&q=%s&aqi=no", pKey, city);
 
             char *api_recv = malloc(10000);
             if (get(API_URL, buff, &api_recv) < 0) {
