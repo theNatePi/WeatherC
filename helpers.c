@@ -4,6 +4,8 @@
 #include <string.h>
 #include <lgpio.h>
 
+int LEDS[6] = {15, 14, 17, 4, 3, 2};
+
 // API Helpers
 
 double getPrecipitation(char *response) {
