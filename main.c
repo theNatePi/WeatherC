@@ -4,8 +4,8 @@
 #include <stdlib.h>
 
 int main(void) {
-  char *key = malloc(256);
-  int result = loadEnv("WEATHER_KEY", &key, 256, ".env");
+  char *key;
+  int result = loadEnv("WEATHER_KEY", &key, ".env");
   printf("%s\n", key);
   free(key);
   return 0;

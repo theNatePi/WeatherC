@@ -30,7 +30,7 @@ char *_checkLine(char *line, char *variable) {
   return NULL;
 }
 
-int loadEnv(char *variable, char **value, int value_len, char *file_path) {
+int loadEnv(char *variable, char **value, char *file_path) {
   // Load the contents of a .env file
   //   variable = key to search for
   //   value = pointer to char* to store var in
@@ -51,7 +51,8 @@ int loadEnv(char *variable, char **value, int value_len, char *file_path) {
   while (line != NULL) {
     _value = _checkLine(line, variable);
     if (_value != NULL) {
-      strncpy(*value, _value, value_len);
+      *value = malloc(strlen(_value) + 1);
+      strcpy(*value, _value);
       result = 0;
       break;
     }
