@@ -8,6 +8,7 @@
 #include <pthread.h>
 #include <string.h>
 #include <signal.h>
+#include <time.h>
 
 sig_atomic_t sigint = 0;
 pthread_mutex_t CURRENT_LOCK;
@@ -70,9 +71,19 @@ void *updateThread(void* _) {
             pthread_mutex_unlock(&HISTORY_LOCK);
         }
 
+        time_t rawtime;
+        char buffer[80];
+        time(&rawtime);
+        struct tm *timeinfo = localtime(&rawtime);
+        strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", timeinfo);
+        printf("\r\033[K");
+        printf("Last Update: %s", buffer);
+        fflush(stdout);
+
         for (int i = 0; i < 30; i++) {
             sleep(20);
             if (sigint) {
+                printf("\n");
                 return NULL;
             }
         }
