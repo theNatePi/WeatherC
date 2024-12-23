@@ -9,6 +9,7 @@
 #include <string.h>
 #include <signal.h>
 #include <time.h>
+#include <lgpio.h>
 
 sig_atomic_t sigint = 0;
 pthread_mutex_t CURRENT_LOCK;
@@ -105,13 +106,33 @@ int main(void) {
     pthread_t threadId;
     pthread_create(&threadId, NULL, updateThread, NULL);
 
+    int handle = lgGpiochipOpen(0);
+    if (handle < 0) {
+        perror("Failed to open gpiochip");
+        return 1;
+    }
+
+    for (int i = 0; i < 6; i++) {
+        if (lgGpioClaimOutput(handle, 0, LEDS[i], 0) < 0) {
+            perror("Failed to claim output");
+            lgGpiochipClose(handle);
+            return 1;
+        }
+    }
+
     while (1) {
         if (sigint) {
-            printf("Shutting down...\nThis may take up to 20 seconds.\n");
+            printf("\nShutting down...\nThis may take up to 10 seconds.\n");
             fflush(stdout);
             pthread_join(threadId, NULL);
             pthread_mutex_destroy(&CURRENT_LOCK);
             pthread_mutex_destroy(&HISTORY_LOCK);
+
+            for (int i = 0; i < 6; i++) {
+                lgGpioFree(handle, LEDS[i]);
+            }
+            lgGpiochipClose(handle);
+
             return 0;
         }
 

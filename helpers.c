@@ -32,22 +32,6 @@ double getPrecipitation(char *response) {
 // GPIO Helpers
 
 int updateLeds(double current[6], double history[6]) {
-  int exitVal = 0;
-
-  int handle = lgGpiochipOpen(0);
-  if (handle < 0) {
-    perror("Failed to open gpiochip");
-    return -1;
-  }
-
-  for (int i = 0; i < 6; i++) {
-    if (lgGpioClaimOutput(handle, 0, LEDS[i], 0) < 0) {
-      perror("Failed to claim output");
-      exitVal = -1;
-      goto cleanup;
-    }
-  }
-
   for (int i = 0; i < 6; i++) {
     if (current[i] > 0) {
       lgGpioWrite(handle, LEDS[i], 1);
@@ -55,11 +39,5 @@ int updateLeds(double current[6], double history[6]) {
       lgGpioWrite(handle, LEDS[i], 0);
     }
   }
-
-  cleanup:
-  for (int i = 0; i < 6; i++) {
-    lgGpioFree(handle, LEDS[i]);
-  }
-  lgGpiochipClose(handle);
-  return exitVal;
+  return 0;
 }
