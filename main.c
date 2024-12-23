@@ -15,6 +15,8 @@ sig_atomic_t sigint = 0;
 pthread_mutex_t CURRENT_LOCK;
 pthread_mutex_t HISTORY_LOCK;
 
+int LEDS[6] = {15, 14, 17, 4, 3, 2};
+
 void handle_sigint(int _) {
     sigint = 1;
 }
@@ -139,7 +141,7 @@ int main(void) {
         // update LEDs
         pthread_mutex_lock(&CURRENT_LOCK);
         pthread_mutex_lock(&HISTORY_LOCK);
-        updateLeds(CURRENT, HISTORY);
+        updateLeds(CURRENT, HISTORY, handle, LEDS);
         pthread_mutex_unlock(&CURRENT_LOCK);
         pthread_mutex_unlock(&HISTORY_LOCK);
         sleep(1);

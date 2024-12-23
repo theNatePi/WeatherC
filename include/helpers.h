@@ -2,6 +2,6 @@
 #define HELPERS_H
 
 double getPrecipitation(char *response);
-int updateLeds(double current[6], double history[6]);
+int updateLeds(double current[6], double history[6], int handle, int leds[6]);
 
 #endif //HELPERS_H

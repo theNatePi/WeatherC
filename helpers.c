@@ -4,8 +4,6 @@
 #include <string.h>
 #include <lgpio.h>
 
-int LEDS[6] = {15, 14, 17, 4, 3, 2};
-
 // API Helpers
 
 double getPrecipitation(char *response) {
@@ -31,12 +29,12 @@ double getPrecipitation(char *response) {
 
 // GPIO Helpers
 
-int updateLeds(double current[6], double history[6]) {
+int updateLeds(double current[6], double history[6], int handle, int leds[6]) {
   for (int i = 0; i < 6; i++) {
     if (current[i] > 0) {
-      lgGpioWrite(handle, LEDS[i], 1);
+      lgGpioWrite(handle, leds[i], 1);
     } else {
-      lgGpioWrite(handle, LEDS[i], 0);
+      lgGpioWrite(handle, leds[i], 0);
     }
   }
   return 0;
