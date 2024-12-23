@@ -105,6 +105,8 @@ int main(void) {
         }
 
         // update LEDs
+        // pthread_mutex_lock(&cu)
+        updateLeds(CURRENT, HISTORY);
         sleep(1);
 
     }
