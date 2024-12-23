@@ -48,15 +48,15 @@ int updateLeds(double current[6], double history[6]) {
 
   for (int i = 0; i < 6; i++) {
     if (current[i] > 0) {
-      lgGpioWrite(handle, LEDS[j], 1);
+      lgGpioWrite(handle, LEDS[i], 1);
     } else {
-      lgGpioWrite(handle, LEDS[j], 0);
+      lgGpioWrite(handle, LEDS[i], 0);
     }
   }
 
   cleanup:
-  for (i = 0; i < 6; i++) {
-    lgGpioFree(handle, leds[i]);
+  for (int i = 0; i < 6; i++) {
+    lgGpioFree(handle, LEDS[i]);
   }
   lgGpiochipClose(handle);
   return exitVal;
