@@ -21,6 +21,5 @@ double getPrecipitation(char *response) {
     result = strtok(NULL, ":");
   }
   result = strtok(NULL, ",");
-  printf("%f\n", atof(result));
   return atof(result);
 }
