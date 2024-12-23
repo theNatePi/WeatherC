@@ -13,7 +13,7 @@ char *CITIES[6] = {
     "Seattle",
     "New York",
     "Vancouver",
-    "London"
+    "Singapore"
 };
 
 void handle_sigint(int _);
