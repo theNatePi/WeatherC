@@ -96,7 +96,7 @@ int main(void) {
 
     while (1) {
         if (sigint) {
-            printf("Shutting down...\nThis may take up to 20 seconds.");
+            printf("Shutting down...\nThis may take up to 20 seconds.\n");
             fflush(stdout);
             pthread_join(threadId, NULL);
             pthread_mutex_destroy(&CURRENT_LOCK);
@@ -105,8 +105,11 @@ int main(void) {
         }
 
         // update LEDs
-        // pthread_mutex_lock(&cu)
+        pthread_mutex_lock(&CURRENT_LOCK);
+        pthread_mutex_lock(&HISTORY_LOCK);
         updateLeds(CURRENT, HISTORY);
+        pthread_mutex_unlock(&CURRENT_LOCK);
+        pthread_mutex_unlock(&HISTORY_LOCK);
         sleep(1);
 
     }
