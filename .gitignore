@@ -1,6 +1,4 @@
 .env
 /bin/*
 /obj/*
-
 /.idea/*
-(because im not that good at vim yet :()

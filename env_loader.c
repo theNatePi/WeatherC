@@ -4,8 +4,11 @@
 #include <string.h>
 
 char *_checkLine(char *line, char *variable) {
+  // Checks a line in the .env
+  //   If the line variable matches variable, return the value
+  //   If not, return NULL
   char *value = strtok(line, "=");
-
+  // Get the key
 
   // Trim whitespace
   while (value[strlen(value) - 1] == ' ') {
@@ -28,6 +31,11 @@ char *_checkLine(char *line, char *variable) {
 }
 
 int loadEnv(char *variable, char **value, int value_len, char *file_path) {
+  // Load the contents of a .env file
+  //   variable = key to search for
+  //   value = pointer to char* to store var in
+  //   value_len = len of the value string
+  //   file_path = path to .env file
   int result = -1;
 
   FILE *file = fopen(file_path, "r");
