@@ -32,8 +32,12 @@ double getPrecipitation(char *response) {
 int updateLeds(double current[6], double history[6], int handle, int leds[6]) {
   for (int i = 0; i < 6; i++) {
     if (current[i] > 0) {
-      lgGpioWrite(handle, leds[i], 1);
+      if (current[i] > 1) {
+        // todo: finish
+      }
+    	lgTxPwm(handle, leds[i], 1000, , 0 , 0);
     } else {
+    	lgTxPwm(handle, leds[i], 1000, NO_RAIN, 0 , 0);
       lgGpioWrite(handle, leds[i], 0);
     }
   }

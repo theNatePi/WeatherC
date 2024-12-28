@@ -1,6 +1,7 @@
 #ifndef HELPERS_H
 #define HELPERS_H
 
+#define NO_RAIN 0
 #define LOW_RAIN 20
 #define MED_RAIN 50
 #define HIGH_RAIN 100
