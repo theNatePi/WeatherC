@@ -2,7 +2,7 @@
 #include "include/env_loader.h"
 #include "include/helpers.h"
 #include "include/requests.h"
-#include <lgpio.h>
+// #include <lgpio.h>
 #include <pthread.h>
 #include <signal.h>
 #include <stdio.h>
@@ -16,6 +16,15 @@ pthread_mutex_t CURRENT_LOCK;
 pthread_mutex_t HISTORY_LOCK;
 
 int LEDS[6] = {15, 14, 17, 4, 3, 2};
+int CITY_CODES[6] = {
+	350473, // Portland
+  // 226396, // Tokyo
+  347629, // San Francisco
+  351409, // Seattle
+  349727, // New York
+  53286,  // Vancouver
+  300597  // Singapore
+};
 
 void handle_sigint(int _) { sigint = 1; }
 
@@ -30,14 +39,14 @@ void *updateThread(void *_) {
   while (1) {
     for (int i = 0; i < 6; i++) {
       char buff[250];
-      char city[200];
-      strcpy(city, CITIES[i]);
-      for (int j = 0; j < (int)strlen(city); j++) {
-        if (city[j] == ' ') {
-          city[j] = '+';
-        }
-      }
-      snprintf(buff, 250, "v1/current.json?key=%s&q=%s&aqi=no", pKey, city);
+      // Code for replacing spaces with '+'
+      // for (int j = 0; j < (int)strlen(city); j++) {
+      //   if (city[j] == ' ') {
+      //     city[j] = '+';
+      //   }
+      // }
+      char *path = "currentconditions/v1/%d?apikey=%s&details=true";
+      snprintf(buff, 250, path, CITY_CODES[i], pKey);
 
       char *api_recv = malloc(10000);
       if (get(API_URL, buff, &api_recv) < 0) {
@@ -56,6 +65,7 @@ void *updateThread(void *_) {
 
       double prec = getPrecipitation(api_recv);
       free(api_recv);
+      return NULL;
 
       pthread_mutex_lock(&CURRENT_LOCK);
       pthread_mutex_lock(&HISTORY_LOCK);
@@ -106,6 +116,7 @@ int main(void) {
   pthread_t threadId;
   pthread_create(&threadId, NULL, updateThread, NULL);
 
+  /*
   int handle = lgGpiochipOpen(0);
   if (handle < 0) {
     perror("Failed to open gpiochip");
@@ -119,6 +130,7 @@ int main(void) {
       return 1;
     }
   }
+  */
 
   while (1) {
     if (sigint) {
@@ -128,10 +140,12 @@ int main(void) {
       pthread_mutex_destroy(&CURRENT_LOCK);
       pthread_mutex_destroy(&HISTORY_LOCK);
 
+      /*
       for (int i = 0; i < 6; i++) {
         lgGpioFree(handle, LEDS[i]);
       }
       lgGpiochipClose(handle);
+      */
 
       return 0;
     }
@@ -139,6 +153,7 @@ int main(void) {
     // update LEDs
     pthread_mutex_lock(&CURRENT_LOCK);
     pthread_mutex_lock(&HISTORY_LOCK);
+    int handle = 0;
     updateLeds(CURRENT, HISTORY, handle, LEDS);
     pthread_mutex_unlock(&CURRENT_LOCK);
     pthread_mutex_unlock(&HISTORY_LOCK);

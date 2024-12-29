@@ -1,3 +1,4 @@
+#include "include/requests.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,9 +8,6 @@
 #include <netdb.h>
 #include <unistd.h>
 
-#define MAX_RESPONSE_SIZE 4096
-#define MAX_REQUEST_SIZE 1024
-
 int get(const char *url, char *path, char **response) {
   // TODO: Refactor
 
@@ -17,7 +15,8 @@ int get(const char *url, char *path, char **response) {
     int port = 80;
 
     // Parse URL
-    if (sscanf(url, "http://%255[^:/]:%d/%255[^\n]", host, &port, path) < 1) {
+    if ((sscanf(url, "https://%255[^:/]:%d/%255[^\n]", host, &port, path) < 1) &&
+    		(sscanf(url, "http://%255[^:/]:%d/%255[^\n]", host, &port, path) < 1)) {
         fprintf(stderr, "Invalid URL format\n");
         return -1;
     }
